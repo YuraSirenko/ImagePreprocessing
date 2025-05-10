@@ -12,10 +12,12 @@ namespace fs = std::filesystem;
 
 std::optional<cv::Mat> loadImage(const fs::directory_entry &entry);
 
-void saveImages(const fs::path &editedDir,
+void saveImage(const fs::path &editedDir,
                 const fs::directory_entry &entry,
                 const cv::Mat &edited,
                 const cv::Mat &original,
                 bool smallCompare);
+
+cv::Mat mergeImage(const cv::Mat &sharpened, const cv::Mat &filtered);
 
 #endif //IO_H

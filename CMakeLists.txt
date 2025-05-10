@@ -16,7 +16,8 @@ add_executable(preprocess main.cpp
         edge_enhancement_laplacian.h
         bilateral_filtering.h
         io.cpp
-        io.h)
+        io.h
+        clock.h)
 target_link_libraries(preprocess ${OpenCV_LIBS})
 
 target_compile_definitions(preprocess PRIVATE SMALL_COMPARE=1)

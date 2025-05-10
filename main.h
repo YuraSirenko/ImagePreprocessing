@@ -25,6 +25,7 @@ inline const std::string IMAGES = "/images";
 inline const std::string IMAGES_4 = "/images4";
 
 inline const std::string IMAGES_4_COMPARE = "/images4compare";
+inline const std::string IMAGES_40_COMPARE = "/images40compare";
 
 
 #endif //MAIN_H

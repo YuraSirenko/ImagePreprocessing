@@ -28,10 +28,12 @@ int main() {
         auto image = loadImage(entry);
         if (!image) continue;
 
-        cv::Mat sharpened = laplacian(image.value(), 3, 1, -0.3, 0);
-        cv::Mat edited = bilateralFiltering(sharpened);
+        cv::Mat sharpened = laplacian(image.value(), 3, 0.8, 0.2, 0);
+        cv::Mat filtered = bilateralFiltering(image.value());
 
-        saveImages(outputPath, entry, edited, image.value(), smallCompare);
+        cv::Mat edited = mergeImage(sharpened, filtered);
+
+        saveImage(outputPath, entry, edited, image.value(), smallCompare);
 
         processed++;
     }

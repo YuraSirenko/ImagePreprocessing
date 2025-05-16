@@ -20,6 +20,9 @@ inline const std::string PREPROCESSED_TRAIN = PATH_TO_DATASETS + "/preprocessed/
 inline const std::string KAGGLE_VALID = PATH_TO_DATASETS + "/kaggle/valid";
 inline const std::string PREPROCESSED_VALID = PATH_TO_DATASETS + "/preprocessed/valid";
 
+inline const std::string KAGGLE_HUNDRED = PATH_TO_DATASETS + "/kaggle/AHundred";
+inline const std::string PREPROCESSED_HUNDRED = PATH_TO_DATASETS + "/preprocessed/AHundred";
+
 inline const std::string IMAGES = "/images";
 
 inline const std::string IMAGES_4 = "/images4";

@@ -1,9 +1,8 @@
 #ifndef CLOCK_H
 #define CLOCK_H
 
-#pragma once
-
 #include <chrono>
+#include <iostream>
 
 class Clock {
 public:

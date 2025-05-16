@@ -5,19 +5,15 @@
 #include <opencv2/imgproc.hpp>
 #include <opencv2/opencv.hpp>
 
-#include <iostream>
 #include <filesystem>
+#include <iostream>
 
 namespace fs = std::filesystem;
 
 std::optional<cv::Mat> loadImage(const fs::directory_entry &entry);
 
-void saveImage(const fs::path &editedDir,
-                const fs::directory_entry &entry,
-                const cv::Mat &edited,
-                const cv::Mat &original,
-                bool smallCompare);
+void saveImage(const fs::path &editedDir, const fs::directory_entry &entry, const cv::Mat &edited);
 
 cv::Mat mergeImage(const cv::Mat &sharpened, const cv::Mat &filtered);
 
-#endif //IO_H
+#endif // IO_H

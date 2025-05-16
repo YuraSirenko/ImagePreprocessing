@@ -21,7 +21,7 @@ void processImagesSequence(const std::string& inputPath,
         }
     }
 
-    clock.logTime();
+    clock.logTime("Main");
 }
 
 void processImagesMPI(const std::string& inputPath,
@@ -50,5 +50,5 @@ void processImagesMPI(const std::string& inputPath,
         }
     }
         clock.stop();
-        clock.logTime();
+        clock.logTime("Main");
 }

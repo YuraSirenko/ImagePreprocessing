@@ -15,22 +15,51 @@ void Computation::setThreads(int threads) {
 
 cv::Mat Computation::sequence(const cv::Mat &image, Clock &clock) {
     clock.start();
+    Clock shit = Clock();
+    shit.start();
+
+    Clock a = Clock();
+    a.start();
     const auto lap = laplacian(image);
+    a.logTime("laplacian");
+
+    Clock b = Clock();
+    b.start();
     const auto bil = bilateralFiltering(image);
+    b.logTime("bilateralFiltering");
+
+    shit.logTime("Total");
     clock.stop();
     return mergeImage(lap, bil);
 }
 
 cv::Mat Computation::openmp(const cv::Mat &image, Clock &clock) {
-    cv::Mat lap, bil;
+    cv::Mat lap = image, bil = image ;
     clock.start();
-#pragma omp parallel sections
+    Clock shit = Clock();
+    shit.start();
+#pragma omp parallel num_threads(2)
     {
-#pragma omp section
-        lap = laplacian(image);
-#pragma omp section
-        bil = bilateralFiltering(image);
+#pragma omp single nowait
+        {
+#pragma omp task shared(lap)
+            {
+                Clock a = Clock();
+                a.start();
+                lap = laplacian(lap);
+                a.logTime("laplacian");
+            }
+#pragma omp task shared(bil)
+            {
+                Clock b = Clock();
+                b.start();
+                bil = bilateralFiltering(bil);
+                b.logTime("bilateralFiltering");
+            }
+#pragma omp taskwait
+        }
     }
+    shit.logTime("Total");
     clock.stop();
     return mergeImage(lap, bil);
 }

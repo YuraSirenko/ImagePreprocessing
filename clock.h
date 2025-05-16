@@ -38,8 +38,8 @@ public:
         return elapsed_;
     }
 
-    void logTime() const {
-        std::cout << "Elapsed time: " << elapsed().count() << " ms\n";
+    void logTime(const std::string& logger_name) const {
+        std::cout <<"["<<logger_name<<"] Elapsed time: " << elapsed().count() << " ms\n";
     }
 
 private:

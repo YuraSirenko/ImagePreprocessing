@@ -1,11 +1,6 @@
 #ifndef BILATERAL_FILTERING_H
 #define BILATERAL_FILTERING_H
 
-#include <iostream>
-#include <filesystem>
-
-#include <opencv2/highgui.hpp>
-#include <opencv2/imgproc.hpp>
 #include <opencv2/opencv.hpp>
 
 [[nodiscard]]

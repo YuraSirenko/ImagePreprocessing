@@ -17,26 +17,16 @@ std::optional<cv::Mat> loadImage(const fs::directory_entry &entry) {
     return img;
 }
 
-// Writes the edited image to `editedDir` and, if `smallCompare` is true,
-// writes the original (prefixed with "orig_") to `origDir`.
-void saveImage(const fs::path &editedDir,
-               const fs::directory_entry &entry,
-               const cv::Mat &edited,
-               const cv::Mat &original,
-               bool smallCompare)
-{
+void saveImage(const fs::path &editedDir, const fs::directory_entry &entry, const cv::Mat &edited) {
+    fs::create_directories(editedDir);
     const auto fileName = entry.path().filename();
     cv::imwrite((editedDir / fileName).string(), edited);
 
-    if (smallCompare) {
-        const auto origName = std::string("orig_") + fileName.string();
-        cv::imwrite((editedDir / origName).string(), original);
-    }
     std::cout << "Processed: " << entry.path().filename() << "\n";
 }
 
 cv::Mat mergeImage(const cv::Mat &sharpened, const cv::Mat &filtered) {
     cv::Mat edited;
     cv::addWeighted(sharpened, 0.5, filtered, 0.5, 0.0, edited);
-    return edited ;
+    return edited;
 }

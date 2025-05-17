@@ -1,46 +1,46 @@
 #include "main.h"
 
-#ifdef SMALL_COMPARE
-static constexpr bool smallCompare = true;
-#else
-static constexpr bool smallCompare = false;
-#endif
+#include <mpi.h>
 
-#include "edge_enhancement_laplacian.h"
-#include "bilateral_filtering.h"
-#include "io.h"
 #include "clock.h"
+#include "computation.h"
+#include "helper.h"
+#include "io.h"
+
+#include <omp.h>
+#include <string>
 
 using namespace std;
 namespace fs = std::filesystem;
 
-int main() {
-    const std::string inputPath = KAGGLE_TEST + IMAGES;
-    const std::string outputPath = PREPROCESSED_TEST + IMAGES_40_COMPARE;
+int main(int argc, char **argv) {
+    MPI_Init(&argc, &argv);
 
-    int processed = 0;
-    auto clock = Clock();
-    clock.start();
-    for (const auto &entry: fs::directory_iterator(inputPath)) {
-        if (smallCompare) {
-            if (processed == 40) {
-                break;
-            }
-        }
+    int world_size, world_rank;
+    MPI_Comm_size(MPI_COMM_WORLD, &world_size);
+    MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
 
-        auto image = loadImage(entry);
-        if (!image) continue;
-
-        cv::Mat sharpened = laplacian(image.value(), 3, 0.8, 0.2, 0);
-        cv::Mat filtered = bilateralFiltering(image.value());
-
-        cv::Mat edited = mergeImage(sharpened, filtered);
-
-        saveImage(outputPath, entry, edited, image.value(), smallCompare);
-
-        processed++;
+    if (world_rank == 0) {
+        std::cout << "Running on " << world_size << " MPI process(es)\n";
     }
-    clock.logTime();
 
+#ifdef _OPENMP
+    if (world_rank == 0) {
+        std::cout << "OpenMP max threads: " << omp_get_max_threads() << "\n";
+    }
+#endif
+
+    const std::string inputPath = KAGGLE_HUNDRED + IMAGES;
+    const std::string outputPath = PREPROCESSED_HUNDRED + IMAGES;
+
+    bool useMPI = false;
+    Mode subMode = Mode::OpenMP;
+
+    if (useMPI) {
+        processImagesMPI(inputPath, outputPath, subMode);
+    } else {
+        processImagesSequence(inputPath, outputPath, subMode);
+    }
+    MPI_Finalize();
     return 0;
 }
